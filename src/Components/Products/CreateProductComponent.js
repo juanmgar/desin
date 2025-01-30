@@ -1,13 +1,15 @@
 import {useState} from "react";
 import {modifyStateProperty} from "../../Utils/UtilsState";
-import {Card, Input, Button, Row, Col, Form, Typography, Upload} from "antd";
+import {Card, Input, Button, Row, Col, Form, Upload, Select} from "antd";
 import { useSelector, useDispatch } from "react-redux";
-import { actions } from "../../Reducers/reducerCountSlice"
+import { actions } from "../../Reducers/reducerCountSlice";
 
 let CreateProductComponent = () => {
     const countGlobalState1 = useSelector(state => state.reducerCount);
     const countGlobalState2 = useSelector(state => state.reducerCountSlice);
     const dispatch = useDispatch();
+
+    const categories = ["Electrónica", "Moda", "Hogar", "Deportes", "Libros", "Juguetes", "Salud"];
 
     let [formData, setFormData] = useState({})
 
@@ -56,53 +58,44 @@ let CreateProductComponent = () => {
                 console.log("Error: " + e.msg)
             })
         }
-
     }
 
     return (
         <Row align="middle" justify="center" style={{minHeight: "70vh"}}>
             <Col>
                 <Card title="Create product" style={{width: "500px"}}>
-
                     <p> Global count1: { countGlobalState1 } </p>
                     <button onClick={ () => { dispatch({type:"plus/count"}) } }> +1 </button>
                     <button onClick={ () => { dispatch({type:"less/count"}) } }> -1 </button>
-                    <button
-                        onClick={ () => { dispatch({type:"modify/count", payload:999 }) } }>
-                        to 999 </button>
+                    <button onClick={ () => { dispatch({type:"modify/count", payload:999 }) } }> to 999 </button>
 
                     <p> Global count2: { countGlobalState2 } </p>
                     <button onClick={ () => { dispatch(actions.increment()) } }> +1 </button>
                     <button onClick={ () => { dispatch(actions.decrement()) } }> -1 </button>
-                    <button
-                        onClick={ () => { dispatch(actions.modify(1)) } }>
-                        to 1 </button>
+                    <button onClick={ () => { dispatch(actions.modify(1)) } }> to 1 </button>
 
                     <Form.Item label="">
-                        <Input onChange={
-                            (i) => modifyStateProperty(
-                                formData, setFormData, "title", i.currentTarget.value)}
-                               size="large" type="text" placeholder="product title"></Input>
+                        <Input onChange={(i) => modifyStateProperty(formData, setFormData, "title", i.currentTarget.value)} size="large" type="text" placeholder="product title"></Input>
                     </Form.Item>
 
                     <Form.Item label="">
-                        <Input onChange={
-                            (i) => modifyStateProperty(
-                                formData, setFormData, "description", i.currentTarget.value)}
-                               size="large" type="text" placeholder="description"></Input>
+                        <Input onChange={(i) => modifyStateProperty(formData, setFormData, "description", i.currentTarget.value)} size="large" type="text" placeholder="description"></Input>
                     </Form.Item>
 
                     <Form.Item label="">
-                        <Input onChange={
-                            (i) => modifyStateProperty(
-                                formData, setFormData, "price", i.currentTarget.value)}
-                               size="large" type="number" placeholder="price"></Input>
+                        <Input onChange={(i) => modifyStateProperty(formData, setFormData, "price", i.currentTarget.value)} size="large" type="number" placeholder="price"></Input>
+                    </Form.Item>
+
+                    <Form.Item label="">
+                        <Select placeholder="Select category" onChange={(value) => modifyStateProperty(formData, setFormData, "category", value)}>
+                            {categories.map(category => (
+                                <Select.Option key={category} value={category}>{category}</Select.Option>
+                            ))}
+                        </Select>
                     </Form.Item>
 
                     <Form.Item name="image">
-                        <Upload maxCount={1} action={
-                            (file) => modifyStateProperty(
-                                formData, setFormData, "image", file)} listType="picture-card">
+                        <Upload maxCount={1} action={(file) => modifyStateProperty(formData, setFormData, "image", file)} listType="picture-card">
                             Upload
                         </Upload>
                     </Form.Item>
