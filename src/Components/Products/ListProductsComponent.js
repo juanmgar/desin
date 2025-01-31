@@ -10,6 +10,7 @@ let ListProductsComponent = () => {
     let [products, setProducts] = useState([]);
     let [filteredProducts, setFilteredProducts] = useState([]);
     let [filters, setFilters] = useState({ category: "", title: "", minPrice: "", maxPrice: "" });
+    let [sortOrder, setSortOrder] = useState("recent");
 
     useEffect(() => {
         getProducts();
@@ -58,6 +59,10 @@ let ListProductsComponent = () => {
         setFilters(prev => ({ ...prev, [key]: value }));
     };
 
+    const handleSortChange = (value) => {
+        setSortOrder(value);
+    };
+
     useEffect(() => {
         let filtered = products.filter(product => {
             return (
@@ -67,8 +72,19 @@ let ListProductsComponent = () => {
                 (!filters.maxPrice || product.price <= parseFloat(filters.maxPrice))
             );
         });
+
+        if (sortOrder === "price") {
+            filtered.sort((a, b) => a.price - b.price);
+        } else if (sortOrder === "price-desc") {
+            filtered.sort((a, b) => b.price - a.price);
+        } else if (sortOrder === "recent") {
+            filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
+        } else if (sortOrder === "oldest") {
+            filtered.sort((a, b) => new Date(a.date) - new Date(b.date));
+        }
+
         setFilteredProducts(filtered);
-    }, [filters, products]);
+    }, [filters, products, sortOrder]);
 
     return (
         <div>
@@ -90,6 +106,16 @@ let ListProductsComponent = () => {
                 </Col>
                 <Col span={6}>
                     <Input type="number" placeholder="Precio máximo" onChange={e => handleFilterChange("maxPrice", e.target.value)} />
+                </Col>
+            </Row>
+            <Row gutter={[16, 16]} style={{ marginTop: "20px" }}>
+                <Col span={6}>
+                    <Select placeholder="Ordenar por" style={{ width: "100%" }} onChange={handleSortChange}>
+                        <Option value="recent">Más reciente</Option>
+                        <Option value="oldest">Más antiguo</Option>
+                        <Option value="price">Precio (menor a mayor)</Option>
+                        <Option value="price-desc">Precio (mayor a menor)</Option>
+                    </Select>
                 </Col>
             </Row>
             <Row gutter={[16, 16]} style={{ marginTop: "20px" }}>
