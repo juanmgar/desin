@@ -1,10 +1,15 @@
 import {useState, useEffect } from "react";
 import { Link } from "react-router-dom"
-import { Card, Col, Row } from 'antd';
+import { Card, Col, Row, Input, Select } from 'antd';
 
+const { Option } = Select;
+
+const categories = ["Electrónica", "Moda", "Hogar", "Deportes", "Libros", "Juguetes", "Salud"];
 
 let ListProductsComponent = () => {
-    let [products, setProducts] = useState([])
+    let [products, setProducts] = useState([]);
+    let [filteredProducts, setFilteredProducts] = useState([]);
+    let [filters, setFilters] = useState({ category: "", title: "", minPrice: "", maxPrice: "" });
 
     useEffect(() => {
         getProducts();
@@ -25,51 +30,78 @@ let ListProductsComponent = () => {
             let promisesForImages = jsonData.map( async p =>  {
                 let urlImage = process.env.REACT_APP_BACKEND_BASE_URL+"/images/"+p.id+".png"
                 let existsImage = await checkURL(urlImage);
-                if ( existsImage )
-                    p.image = urlImage
-                else
-                    p.image = "/imageMockup.png"
-                return p
+                p.image = existsImage ? urlImage : "/imageMockup.png";
+                return p;
             })
 
-            let productsWithImage = await Promise.all(promisesForImages)
-            setProducts(productsWithImage)
-
+            let productsWithImage = await Promise.all(promisesForImages);
+            let availableProducts = productsWithImage.filter(p => !p.buyerEmail);
+            setProducts(availableProducts);
+            setFilteredProducts(availableProducts);
         } else {
             let responseBody = await response.json();
             let serverErrors = responseBody.errors;
-            serverErrors.forEach( e => {
-                console.log("Error: "+e.msg)
-            })
+            serverErrors.forEach(e => console.log("Error: "+e.msg));
         }
     }
-
 
     let checkURL = async (url) => {
         try {
             let response = await fetch(url);
-            console.log(response.ok)
-            return response.ok; // Returns true if the status is in the 200-299 range.
+            return response.ok;
         } catch (error) {
-            return false; // URL does not exist or there was an error.
+            return false;
         }
     }
 
+    const handleFilterChange = (key, value) => {
+        setFilters(prev => ({ ...prev, [key]: value }));
+    };
+
+    useEffect(() => {
+        let filtered = products.filter(product => {
+            return (
+                (!filters.category || product.category === filters.category) &&
+                (!filters.title || product.title.toLowerCase().includes(filters.title.toLowerCase())) &&
+                (!filters.minPrice || product.price >= parseFloat(filters.minPrice)) &&
+                (!filters.maxPrice || product.price <= parseFloat(filters.maxPrice))
+            );
+        });
+        setFilteredProducts(filtered);
+    }, [filters, products]);
 
     return (
         <div>
             <h2>Products</h2>
-            <Row gutter={ [16, 16] } >
-                { products.map( p =>
-                    <Col span={8} >
-                        <Link to={ "/products/"+p.id } >
-                            <Card key={p.id} title={ p.title }
-                                  cover={<img src= { p.image } />}>
-                                { p.price }
+            <Row gutter={[16, 16]}>
+                <Col span={6}>
+                    <Select placeholder="Categoría" style={{ width: "100%" }} onChange={value => handleFilterChange("category", value)}>
+                        <Option value="">Todas</Option>
+                        {categories.map(category => (
+                            <Option key={category} value={category}>{category}</Option>
+                        ))}
+                    </Select>
+                </Col>
+                <Col span={6}>
+                    <Input placeholder="Título" onChange={e => handleFilterChange("title", e.target.value)} />
+                </Col>
+                <Col span={6}>
+                    <Input type="number" placeholder="Precio mínimo" onChange={e => handleFilterChange("minPrice", e.target.value)} />
+                </Col>
+                <Col span={6}>
+                    <Input type="number" placeholder="Precio máximo" onChange={e => handleFilterChange("maxPrice", e.target.value)} />
+                </Col>
+            </Row>
+            <Row gutter={[16, 16]} style={{ marginTop: "20px" }}>
+                {filteredProducts.map(p => (
+                    <Col span={8} key={p.id}>
+                        <Link to={"/products/"+p.id}>
+                            <Card title={p.title} cover={<img src={p.image} alt={p.title} />}>
+                                {p.price}
                             </Card>
                         </Link>
                     </Col>
-                 )}
+                ))}
             </Row>
         </div>
     )
