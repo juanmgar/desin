@@ -5,7 +5,8 @@ import EditProductComponent from "./Components/Products/EditProductComponent";
 import DetailsProductComponent from "./Components/Products/DetailsProductComponent";
 import CreateProductComponent from "./Components/Products/CreateProductComponent";
 import ListMyProductsComponent from "./Components/Products/ListMyProductsComponent";
-import {Route, Routes, Link, useNavigate, useLocation } from "react-router-dom"
+import HomePage from "./Components/HomePage";
+import {Route, Routes, Link, useNavigate, useLocation } from "react-router-dom";
 import {Layout, Menu, Avatar, Typography, Col, Row, notification } from 'antd';
 import {FireOutlined, LoginOutlined} from '@ant-design/icons';
 import {useEffect, useState} from "react";
@@ -17,7 +18,6 @@ let App = () => {
     let location = useLocation();
     let [login, setLogin] = useState(false);
 
-    // for not using Layout.Header, Layout.Footer, etc...
     let {Header, Content, Footer} = Layout;
 
     useEffect(() => {
@@ -99,11 +99,12 @@ let App = () => {
                     <Col xs= {18} sm={19} md={20} lg={21} xl = {22}>
                         {!login &&
                             <Menu theme="dark" mode="horizontal" items={[
-                                {key: "logo", label: <img src="/logo.png" width="40" height="40"/>},
+                                {key: "logo", label: <Link to="/"><img src="/logo.png" width="40" height="40" alt="Home"/></Link>},
                                 {key: "menuLogin", icon: <LoginOutlined/>, label: <Link to="/login">Login</Link>},
                                 {key: "menuRegister", label: <Link to="/register">Register</Link>},
                             ]}>
                             </Menu>
+
                         }
 
                         {login &&
@@ -134,8 +135,8 @@ let App = () => {
                 <div className="site-layout-content">
                     <Routes>
                         <Route path="/" element={
-                            <h1>Index</h1>
-                        }/>
+                            <HomePage />
+                        } />
                         <Route path="/register" element={
                             <CreateUserComponent openNotification={openNotification}/>
                         }/>
