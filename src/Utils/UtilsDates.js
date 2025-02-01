@@ -11,3 +11,7 @@ export let timestampToDate = (timestamp) => {
     let dateInString = timestampToString(timestamp)
     return dayjs(dateInString, dateFormatTemplate)
 }
+
+export let dateToTimestamp = (date) => {
+    return dayjs(date, dateFormatTemplate).unix() * 1000;
+}
