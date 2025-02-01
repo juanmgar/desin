@@ -7,6 +7,7 @@ import CreateProductComponent from "./Components/Products/CreateProductComponent
 import ListMyProductsComponent from "./Components/Products/ListMyProductsComponent";
 import TransactionsComponent from "./Components/Transactions/TransactionsComponent";
 import CreditCardsComponent from "./Components/Creditcards/CreditCardsComponent";
+import UserProfileComponent from "./Components/User/UserProfileComponent";
 import HomePage from "./Components/HomePage";
 import {Route, Routes, Link, useNavigate, useLocation } from "react-router-dom";
 import {Layout, Menu, Avatar, Typography, Col, Row, notification } from 'antd';
@@ -155,6 +156,9 @@ let App = () => {
                         }/>
                         <Route path="/products/:id" element={
                             <DetailsProductComponent/>
+                        }/>
+                        <Route path="/profile/:id" element={
+                            <UserProfileComponent/>
                         }/>
                         <Route path="/products/create" element={
                             <CreateProductComponent />

@@ -1,5 +1,5 @@
 import {useState, useEffect} from "react";
-import {useParams, useNavigate} from 'react-router-dom';
+import {useParams, useNavigate, Link} from 'react-router-dom';
 import {Typography, Card, Descriptions, Image, Button} from 'antd';
 import {ShoppingOutlined} from '@ant-design/icons';
 
@@ -12,7 +12,6 @@ let DetailsProductComponent = () => {
     useEffect(() => {
         getProduct(id);
     }, [])
-
 
     let buyProduct = async () => {
         let response = await fetch(
@@ -82,6 +81,9 @@ let DetailsProductComponent = () => {
                 </Descriptions.Item>
                 <Descriptions.Item label="Description">
                     {product.description}
+                </Descriptions.Item>
+                <Descriptions.Item label="Seller">
+                    <Link to={`/profile/${product.sellerId}`}>Show profile</Link>
                 </Descriptions.Item>
                 <Descriptions.Item>
                     <Text strong underline style={{fontSize: 20}}>{product.price}</Text>

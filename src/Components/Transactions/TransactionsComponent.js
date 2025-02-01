@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Table, Modal, Button } from "antd";
+import { Link } from "react-router-dom";
 
 let TransactionsComponent = () => {
     let [transactions, setTransactions] = useState([]);
@@ -56,6 +57,18 @@ let TransactionsComponent = () => {
             render: (text) => new Date(text).toLocaleDateString()
         },
         {
+            title: "Seller",
+            dataIndex: "sellerId",
+            key: "sellerId",
+            render: (id) => <Link to={`/profile/${id}`}>Ver perfil</Link>
+        },
+        {
+            title: "Buyer",
+            dataIndex: "buyerId",
+            key: "buyerId",
+            render: (id) => <Link to={`/profile/${id}`}>Ver perfil</Link>
+        },
+        {
             title: "Actions",
             key: "actions",
             render: (_, record) => <Button onClick={() => showDetails(record)}>More details</Button>
@@ -71,11 +84,11 @@ let TransactionsComponent = () => {
                     <p><strong>Product:</strong> {selectedTransaction.title}</p>
                     <p><strong>Category:</strong> {selectedTransaction.category}</p>
                     <p><strong>Description:</strong> {selectedTransaction.description}</p>
-                    <p><strong>Buyer:</strong> {selectedTransaction.buyerId}</p>
-                    <p><strong>Buyer Adress:</strong> {selectedTransaction.buyerAddress}</p>
+                    <p><strong>Buyer:</strong> <Link to={`/profile/${selectedTransaction.buyerId}`}>{selectedTransaction.buyerId}</Link></p>
+                    <p><strong>Buyer Address:</strong> {selectedTransaction.buyerAddress}</p>
                     <p><strong>Buyer Country:</strong> {selectedTransaction.buyerCountry}</p>
                     <p><strong>Buyer Postal Code:</strong> {selectedTransaction.buyerPostCode}</p>
-                    <p><strong>Seller:</strong> {selectedTransaction.sellerId}</p>
+                    <p><strong>Seller:</strong> <Link to={`/profile/${selectedTransaction.sellerId}`}>{selectedTransaction.sellerId}</Link></p>
                     <p><strong>Price:</strong> ${selectedTransaction.price}</p>
                     <p><strong>Date:</strong> {new Date(selectedTransaction.date).toLocaleDateString()}</p>
                 </Modal>
