@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { Table, Button, Modal, Form, Input } from "antd";
 
-let CreditCardsComponent = () => {
+let CreditCardsComponent = (props) => {
+    let {openNotification} = props
     let [creditCards, setCreditCards] = useState([]);
     let [isModalVisible, setIsModalVisible] = useState(false);
     let [form] = Form.useForm();
@@ -42,6 +43,7 @@ let CreditCardsComponent = () => {
             getCreditCards();
             setIsModalVisible(false);
             form.resetFields();
+            openNotification("top", "Credit card added successfully", "success")
         } else {
             let responseBody = await response.json();
             let serverErrors = responseBody.errors;
@@ -59,6 +61,7 @@ let CreditCardsComponent = () => {
 
         if (response.ok) {
             getCreditCards();
+            openNotification("top", "Credit card deleted successfully", "success")
         } else {
             let responseBody = await response.json();
             let serverErrors = responseBody.errors;

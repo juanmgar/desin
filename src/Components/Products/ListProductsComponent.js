@@ -1,12 +1,12 @@
 import {useState, useEffect } from "react";
-import { Link } from "react-router-dom"
+import {Link, useNavigate} from "react-router-dom"
 import { Card, Col, Row, Input, Select } from 'antd';
 
 const { Option } = Select;
 
 const categories = ["Electrónica", "Moda", "Hogar", "Deportes", "Libros", "Juguetes", "Salud"];
 
-let ListProductsComponent = () => {
+let ListProductsComponent = (props) => {
     let [products, setProducts] = useState([]);
     let [filteredProducts, setFilteredProducts] = useState([]);
     let [filters, setFilters] = useState({ category: "", title: "", minPrice: "", maxPrice: "" });
@@ -39,6 +39,7 @@ let ListProductsComponent = () => {
             let availableProducts = productsWithImage.filter(p => !p.buyerEmail);
             setProducts(availableProducts);
             setFilteredProducts(availableProducts);
+
         } else {
             let responseBody = await response.json();
             let serverErrors = responseBody.errors;

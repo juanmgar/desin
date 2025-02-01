@@ -160,13 +160,13 @@ let App = () => {
                             <EditProductComponent/>
                         }/>
                         <Route path="/products/:id" element={
-                            <DetailsProductComponent/>
+                            <DetailsProductComponent openNotification={openNotification}/>
                         }/>
                         <Route path="/profile/:id" element={
                             <UserProfileComponent/>
                         }/>
                         <Route path="/products/create" element={
-                            <CreateProductComponent />
+                            <CreateProductComponent openNotification={openNotification}/>
                         }></Route>
                         <Route path="/products/own" element={
                             <ListMyProductsComponent />
@@ -175,7 +175,7 @@ let App = () => {
                             <TransactionsComponent />
                         }></Route>
                         <Route path="/creditcards" element={
-                            <CreditCardsComponent />
+                            <CreditCardsComponent openNotification={openNotification}/>
                         }></Route>
                     </Routes>
                 </div>

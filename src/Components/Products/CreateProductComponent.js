@@ -3,11 +3,14 @@ import {modifyStateProperty} from "../../Utils/UtilsState";
 import {Card, Input, Button, Row, Col, Form, Upload, Select} from "antd";
 import { useSelector, useDispatch } from "react-redux";
 import { actions } from "../../Reducers/reducerCountSlice";
+import {useNavigate} from "react-router-dom";
 
-let CreateProductComponent = () => {
+let CreateProductComponent = (props) => {
+    let {openNotification} = props
     const countGlobalState1 = useSelector(state => state.reducerCount);
     const countGlobalState2 = useSelector(state => state.reducerCountSlice);
     const dispatch = useDispatch();
+    let navigate = useNavigate();
 
     const categories = ["Electrónica", "Moda", "Hogar", "Deportes", "Libros", "Juguetes", "Salud"];
 
@@ -19,7 +22,8 @@ let CreateProductComponent = () => {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json ",
-                    "apikey": localStorage.getItem("apiKey")
+                    "apikey": localStorage.getItem("apiKey"),
+                    "userId": localStorage.getItem("userId")
                 },
                 body: JSON.stringify(formData)
             })
@@ -27,6 +31,8 @@ let CreateProductComponent = () => {
         if (response.ok) {
             let data = await response.json()
             await uploadImage(data.productId)
+            openNotification("top", "Product creation successfull", "success")
+            navigate("/products")
         } else {
             let responseBody = await response.json();
             let serverErrors = responseBody.errors;

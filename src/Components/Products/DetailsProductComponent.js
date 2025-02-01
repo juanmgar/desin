@@ -3,9 +3,10 @@ import {useParams, useNavigate, Link} from 'react-router-dom';
 import {Typography, Card, Descriptions, Image, Button} from 'antd';
 import {ShoppingOutlined} from '@ant-design/icons';
 
-let DetailsProductComponent = () => {
-    const {id} = useParams();
+let DetailsProductComponent = (props) => {
+    let {openNotification} = props
     let navigate = useNavigate();
+    const {id} = useParams();
 
     let [product, setProduct] = useState({})
 
@@ -32,6 +33,8 @@ let DetailsProductComponent = () => {
             if (jsonData.affectedRows == 1) {
 
             }
+            openNotification("top", "Purchase made successfully", "success")
+            navigate("/products")
         } else {
             let responseBody = await response.json();
             let serverErrors = responseBody.errors;
