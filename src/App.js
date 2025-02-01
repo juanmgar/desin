@@ -88,9 +88,12 @@ let App = () => {
             });
 
         localStorage.removeItem("apiKey");
-        setLogin(false)
-        navigate("/login")
-    }
+        localStorage.removeItem("email");
+        localStorage.removeItem("userId");
+        setLogin(false);
+        navigate("/login");
+    };
+
 
 
     const {Text} = Typography;
@@ -123,13 +126,15 @@ let App = () => {
                             </Menu>
                         }
                     </Col>
-                    <Col xs= {6} sm={5} md = {4}  lg = {3} xl = {2}
+                    <Col xs={6} sm={5} md={4} lg={3} xl={2}
                          style={{display: 'flex', flexDirection: 'row-reverse' }} >
                         { login ? (
-                            <Avatar size="large"
-                                    style={{ backgroundColor: "#ff0000", verticalAlign: 'middle', marginTop: 12  }}>
-                                { localStorage.getItem("email").charAt(0) }
-                            </Avatar>
+                            <Link to={`/profile/${localStorage.getItem("userId")}`}>
+                                <Avatar size="large"
+                                        style={{ backgroundColor: "#ff0000", verticalAlign: 'middle', marginTop: 12  }}>
+                                    { localStorage.getItem("email").charAt(0) }
+                                </Avatar>
+                            </Link>
                         ) : (
                             <Link to="/login"> <Text style={{ color:"#ffffff" }}>Login</Text></Link>
                         )}

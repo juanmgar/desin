@@ -67,10 +67,6 @@ let ListMyProductsComponent = () => {
             dataIndex: "id",
         },
         {
-            title: "Seller Id",
-            dataIndex: "sellerId"
-        },
-        {
             title: "Title",
             dataIndex: "title"
         },
@@ -91,7 +87,7 @@ let ListMyProductsComponent = () => {
             title: "Buyer",
             dataIndex: [],
             render: (product) =>
-               <Link to={"/user/"+product.buyerId}>{ product.buyerEmail }</Link>
+                product.buyerId ? <Link to={"/profile/"+product.buyerId}>{ product.buyerEmail }</Link> : "Not Sold"
         },
         {
             title: "Actions",

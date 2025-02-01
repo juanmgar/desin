@@ -60,9 +60,10 @@ const UserProfileComponent = () => {
     return (
         <div>
             {user && (
-                <Card title={`Profile ${user.name}`}>
+                <Card title={`Profile ${user.name} ${user.surname}`}>
                     <p><strong>Email:</strong> {user.email}</p>
-                    <p><strong>Location:</strong> {user.location}</p>
+                    <p><strong>Postal Code:</strong> {user.postalCode}</p>
+                    <p><strong>Country:</strong> {user.country}</p>
                 </Card>
             )}
             <h3>Transactions done</h3>

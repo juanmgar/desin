@@ -83,7 +83,7 @@ let DetailsProductComponent = () => {
                     {product.description}
                 </Descriptions.Item>
                 <Descriptions.Item label="Seller">
-                    <Link to={`/profile/${product.sellerId}`}>Show profile</Link>
+                    <Link to={`/profile/${product.sellerId}`}>Show Seller profile</Link>
                 </Descriptions.Item>
                 <Descriptions.Item>
                     <Text strong underline style={{fontSize: 20}}>{product.price}</Text>

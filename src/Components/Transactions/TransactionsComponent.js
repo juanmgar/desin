@@ -58,15 +58,15 @@ let TransactionsComponent = () => {
         },
         {
             title: "Seller",
-            dataIndex: "sellerId",
-            key: "sellerId",
-            render: (id) => <Link to={`/profile/${id}`}>Ver perfil</Link>
+            dataIndex: [],
+            render: (product) =>
+                product.sellerId ? <Link to={"/profile/"+product.sellerId}>I am the seller</Link> : "N/A"
         },
         {
             title: "Buyer",
-            dataIndex: "buyerId",
-            key: "buyerId",
-            render: (id) => <Link to={`/profile/${id}`}>Ver perfil</Link>
+            dataIndex: [],
+            render: (product) =>
+                product.buyerId ? <Link to={"/profile/"+product.buyerId}>I am the buyer</Link> : "N/A"
         },
         {
             title: "Actions",
@@ -84,11 +84,11 @@ let TransactionsComponent = () => {
                     <p><strong>Product:</strong> {selectedTransaction.title}</p>
                     <p><strong>Category:</strong> {selectedTransaction.category}</p>
                     <p><strong>Description:</strong> {selectedTransaction.description}</p>
-                    <p><strong>Buyer:</strong> <Link to={`/profile/${selectedTransaction.buyerId}`}>{selectedTransaction.buyerId}</Link></p>
+                    <p><strong>Seller:</strong> <Link to={`/profile/${selectedTransaction.sellerId}`}>{selectedTransaction.sellerId}</Link></p>
                     <p><strong>Buyer Address:</strong> {selectedTransaction.buyerAddress}</p>
                     <p><strong>Buyer Country:</strong> {selectedTransaction.buyerCountry}</p>
                     <p><strong>Buyer Postal Code:</strong> {selectedTransaction.buyerPostCode}</p>
-                    <p><strong>Seller:</strong> <Link to={`/profile/${selectedTransaction.sellerId}`}>{selectedTransaction.sellerId}</Link></p>
+                    <p><strong>Buyer:</strong> <Link to={`/profile/${selectedTransaction.buyerId}`}>{selectedTransaction.buyerId}</Link></p>
                     <p><strong>Price:</strong> ${selectedTransaction.price}</p>
                     <p><strong>Date:</strong> {new Date(selectedTransaction.date).toLocaleDateString()}</p>
                 </Modal>

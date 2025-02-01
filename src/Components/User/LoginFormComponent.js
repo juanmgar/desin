@@ -30,9 +30,10 @@ let LoginFormComponent = (props) => {
 
         if (response.ok) {
             let responseBody = await response.json();
-            if (responseBody.apiKey && responseBody.email) {
+            if (responseBody.apiKey && responseBody.email && responseBody.id) {
                 localStorage.setItem("apiKey", responseBody.apiKey)
                 localStorage.setItem("email", responseBody.email)
+                localStorage.setItem("userId", responseBody.id)
             }
             console.log("ok " + responseBody)
             setLogin(true)
@@ -45,7 +46,6 @@ let LoginFormComponent = (props) => {
             setServerErrors(serverErrors,setFormErrors)
             let notificationMsg = joinAllServerErrorMessages(serverErrors)
             openNotification("top",notificationMsg, "error" )
-
         }
     }
 
@@ -89,8 +89,6 @@ let LoginFormComponent = (props) => {
                         <Button type="primary" onClick={clickLogin} block >Login</Button> :
                         <Button type="primary" block disabled>Login</Button>
                     }
-
-
                 </Card>
             </Col>
         </Row>
