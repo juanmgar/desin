@@ -105,7 +105,10 @@ let ListMyProductsComponent = () => {
     ]
 
     return (
+        <div>
+        <h2>My Products</h2>
         <Table columns={columns} dataSource={products}></Table>
+        </div>
     )
 }
 

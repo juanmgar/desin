@@ -5,6 +5,7 @@ import EditProductComponent from "./Components/Products/EditProductComponent";
 import DetailsProductComponent from "./Components/Products/DetailsProductComponent";
 import CreateProductComponent from "./Components/Products/CreateProductComponent";
 import ListMyProductsComponent from "./Components/Products/ListMyProductsComponent";
+import TransactionsComponent from "./Components/Transactions/TransactionsComponent";
 import HomePage from "./Components/HomePage";
 import {Route, Routes, Link, useNavigate, useLocation } from "react-router-dom";
 import {Layout, Menu, Avatar, Typography, Col, Row, notification } from 'antd';
@@ -109,9 +110,10 @@ let App = () => {
 
                         {login &&
                             <Menu theme="dark" mode="horizontal" items={[
-                                {key: "logo", label: <img src="/logo.png" width="40" height="40"/>},
+                                {key: "logo", label: <Link to="/"><img src="/logo.png" width="40" height="40" alt="Home"/></Link>},
                                 {key: "menuProducts", label: <Link to="/products">Products</Link>},
                                 {key: "menuMyProduct", label: <Link to="/products/own">My Products</Link> },
+                                {key: "menuTransactions", label: <Link to="/transactions">My Transactions</Link>},
                                 {key: "menuCreateProduct", label: <Link to="/products/create">Sell</Link> },
                                 {key: "menuDisconnect", label: <Link to="#" onClick={disconnect}>Disconnect</Link>},
                             ]}>
@@ -157,6 +159,9 @@ let App = () => {
                         }></Route>
                         <Route path="/products/own" element={
                             <ListMyProductsComponent />
+                        }></Route>
+                        <Route path="/transactions" element={
+                            <TransactionsComponent />
                         }></Route>
                     </Routes>
                 </div>
