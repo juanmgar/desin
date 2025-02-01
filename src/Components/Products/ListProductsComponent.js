@@ -79,9 +79,9 @@ let ListProductsComponent = (props) => {
         } else if (sortOrder === "price-desc") {
             filtered.sort((a, b) => b.price - a.price);
         } else if (sortOrder === "recent") {
-            filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
+            filtered.sort((a, b) => (b.date ? Number(b.date) : 0) - (a.date ? Number(a.date) : 0));
         } else if (sortOrder === "oldest") {
-            filtered.sort((a, b) => new Date(a.date) - new Date(b.date));
+            filtered.sort((a, b) => (a.date ? Number(a.date) : 0) - (b.date ? Number(b.date) : 0));
         }
 
         setFilteredProducts(filtered);
