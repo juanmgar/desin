@@ -6,6 +6,7 @@ import DetailsProductComponent from "./Components/Products/DetailsProductCompone
 import CreateProductComponent from "./Components/Products/CreateProductComponent";
 import ListMyProductsComponent from "./Components/Products/ListMyProductsComponent";
 import TransactionsComponent from "./Components/Transactions/TransactionsComponent";
+import CreditCardsComponent from "./Components/Creditcards/CreditCardsComponent";
 import HomePage from "./Components/HomePage";
 import {Route, Routes, Link, useNavigate, useLocation } from "react-router-dom";
 import {Layout, Menu, Avatar, Typography, Col, Row, notification } from 'antd';
@@ -114,6 +115,7 @@ let App = () => {
                                 {key: "menuProducts", label: <Link to="/products">Products</Link>},
                                 {key: "menuMyProduct", label: <Link to="/products/own">My Products</Link> },
                                 {key: "menuTransactions", label: <Link to="/transactions">My Transactions</Link>},
+                                {key: "menuCreditCards", label: <Link to="/creditcards">My Credit Cards</Link>},
                                 {key: "menuCreateProduct", label: <Link to="/products/create">Sell</Link> },
                                 {key: "menuDisconnect", label: <Link to="#" onClick={disconnect}>Disconnect</Link>},
                             ]}>
@@ -162,6 +164,9 @@ let App = () => {
                         }></Route>
                         <Route path="/transactions" element={
                             <TransactionsComponent />
+                        }></Route>
+                        <Route path="/creditcards" element={
+                            <CreditCardsComponent />
                         }></Route>
                     </Routes>
                 </div>
