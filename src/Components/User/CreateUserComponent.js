@@ -1,76 +1,93 @@
-import {useState} from "react";
-import {modifyStateProperty} from "../../Utils/UtilsState";
+import { useState } from "react";
+import { Input, Button, Card, Form, Select, DatePicker } from "antd";
+import { validateFormDataInputRequired, validateFormDataInputEmail, allowSubmitForm, setServerErrors } from "../../Utils/UtilsValidations";
+import { dateToTimestamp } from "../../Utils/UtilsDates";
 
-let CreateUserComponent = () => {
+const { Option } = Select;
 
-    let [formData, setFormData] = useState({
-        email: '',
-        password: '',
-        name: '',
-        surname: '',
-        documentIdentity: '',
-        documentNumber: '',
-        country: '',
-        address: '',
-        postalCode: '',
-        birthday: ''
-    });
+const CreateUserComponent = ({ openNotification }) => {
+    const [form] = Form.useForm();
+    const [loading, setLoading] = useState(false);
+    const [formData, setFormData] = useState({});
 
-    let clickCreate = async () => {
-        let response = await fetch(process.env.REACT_APP_BACKEND_BASE_URL+"/users", {
+    const handleInputChange = (key, value) => {
+        setFormData((prev) => ({ ...prev, [key]: value }));
+    };
+
+    const clickCreate = async () => {
+        if (!allowSubmitForm(formData, {}, ["email", "password", "name", "surname", "documentIdentity", "documentNumber", "country", "address", "postalCode", "birthday"])) {
+            openNotification("top", "Form contains errors", "error");
+            return;
+        }
+
+        const formattedData = {
+            ...formData,
+            birthday: dateToTimestamp(formData.birthday)
+        };
+
+        setLoading(true);
+        let response = await fetch(process.env.REACT_APP_BACKEND_BASE_URL + "/users", {
             method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify(formData)
-        })
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(formattedData),
+        });
 
         if (response.ok) {
-            let responseBody = await response.json();
-            console.log("ok " + responseBody)
+            openNotification("top", "User successfully created", "success");
+            form.resetFields();
         } else {
             let responseBody = await response.json();
-            let serverErrors = responseBody.errors;
-            serverErrors.forEach(e => {
-                console.log("Error: " + e.msg)
-            })
+            setServerErrors(responseBody.errors, () => {});
+            openNotification("top", "Error creating user", "error");
         }
-    }
+        setLoading(false);
+    };
 
     return (
-        <div>
-            <h2>Create User</h2>
-            <input onChange={(i) => {
-                modifyStateProperty(formData, setFormData, "email", i.currentTarget.value)
-            }} type="text" name="email" placeholder="Email" required/>
-            <input onChange={(i) => {
-                modifyStateProperty(formData, setFormData, "password", i.currentTarget.value)
-            }} type="password" name="password" placeholder="Contraseña" required/>
-            <input onChange={(i) => {
-                modifyStateProperty(formData, setFormData, "name", i.currentTarget.value)
-            }} type="text" name="name" placeholder="Nombre"/>
-            <input onChange={(i) => {
-                modifyStateProperty(formData, setFormData, "surname", i.currentTarget.value)
-            }} type="text" name="surname" placeholder="Apellido"/>
-            <input onChange={(i) => {
-                modifyStateProperty(formData, setFormData, "documentIdentity", i.currentTarget.value)
-            }} type="text" name="documentIdentity" placeholder="Tipo de documento"/>
-            <input onChange={(i) => {
-                modifyStateProperty(formData, setFormData, "documentNumber", i.currentTarget.value)
-            }} type="text" name="documentNumber" placeholder="Número de documento"/>
-            <input onChange={(i) => {
-                modifyStateProperty(formData, setFormData, "country", i.currentTarget.value)
-            }} type="text" name="country" placeholder="País"/>
-            <input onChange={(i) => {
-                modifyStateProperty(formData, setFormData, "address", i.currentTarget.value)
-            }} type="text" name="address" placeholder="Dirección"/>
-            <input onChange={(i) => {
-                modifyStateProperty(formData, setFormData, "postalCode", i.currentTarget.value)
-            }} type="text" name="postalCode" placeholder="Código postal"/>
-            <input onChange={(i) => {
-                modifyStateProperty(formData, setFormData, "birthday", i.currentTarget.value)
-            }} type="text" name="birthday" placeholder="Fecha de nacimiento"/>
-            <button onClick={clickCreate}>Create User</button>
-        </div>
-    )
-}
+        <Card title="Create Account" style={{ maxWidth: 400, margin: "auto", marginTop: 20 }}>
+            <Form form={form} layout="vertical" onFinish={clickCreate}>
+                <Form.Item label="Email" name="email" rules={[{ required: true, type: "email", message: "Invalid email format" }]}>
+                    <Input autoFocus placeholder="Email" onChange={(e) => handleInputChange("email", e.target.value)} />
+                </Form.Item>
+                <Form.Item label="Password" name="password" rules={[{ required: true, message: "Password is required" }]}>
+                    <Input.Password placeholder="Password" onChange={(e) => handleInputChange("password", e.target.value)} />
+                </Form.Item>
+                <Form.Item label="First Name" name="name" rules={[{ required: true, message: "First name is required" }]}>
+                    <Input placeholder="First Name" onChange={(e) => handleInputChange("name", e.target.value)} />
+                </Form.Item>
+                <Form.Item label="Last Name" name="surname" rules={[{ required: true, message: "Last name is required" }]}>
+                    <Input placeholder="Last Name" onChange={(e) => handleInputChange("surname", e.target.value)} />
+                </Form.Item>
+                <Form.Item label="Document Type" name="documentIdentity" rules={[{ required: true, message: "Document type is required" }]}>
+                    <Select placeholder="Select" onChange={(value) => handleInputChange("documentIdentity", value)}>
+                        <Option value="DNI">DNI</Option>
+                        <Option value="Passport">Passport</Option>
+                        <Option value="Other">Other</Option>
+                    </Select>
+                </Form.Item>
+                <Form.Item label="Document Number" name="documentNumber" rules={[{ required: true, message: "Document number is required" }]}>
+                    <Input placeholder="Document Number" onChange={(e) => handleInputChange("documentNumber", e.target.value)} />
+                </Form.Item>
+                <Form.Item label="Country" name="country" rules={[{ required: true, message: "Country is required" }]}>
+                    <Input placeholder="Country" onChange={(e) => handleInputChange("country", e.target.value)} />
+                </Form.Item>
+                <Form.Item label="Address" name="address" rules={[{ required: true, message: "Address is required" }]}>
+                    <Input placeholder="Address" onChange={(e) => handleInputChange("address", e.target.value)} />
+                </Form.Item>
+                <Form.Item label="Postal Code" name="postalCode" rules={[{ required: true, message: "Postal code is required" }]}>
+                    <Input placeholder="Postal Code" onChange={(e) => handleInputChange("postalCode", e.target.value)} />
+                </Form.Item>
+                <Form.Item label="Birthday" name="birthday" rules={[{ required: true, message: "Birthday is required" }]}>
+                    <DatePicker style={{ width: "100%" }} onChange={(date) => handleInputChange("birthday", date)} />
+                </Form.Item>
+                <Form.Item>
+                    <Button type="primary" htmlType="submit" loading={loading} block>
+                        Create Account
+                    </Button>
+                </Form.Item>
+            </Form>
+        </Card>
+    );
+};
 
 export default CreateUserComponent;
