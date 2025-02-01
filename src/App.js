@@ -13,6 +13,7 @@ import {Route, Routes, Link, useNavigate, useLocation } from "react-router-dom";
 import {Layout, Menu, Avatar, Typography, Col, Row, notification } from 'antd';
 import {FireOutlined, LoginOutlined} from '@ant-design/icons';
 import {useEffect, useState} from "react";
+import ListMyOffers from "./Components/Offers/ListMyOffers";
 
 let App = () => {
     const [api, contextHolder] = notification.useNotification();
@@ -119,6 +120,7 @@ let App = () => {
                                 {key: "menuProducts", label: <Link to="/products">Products</Link>},
                                 {key: "menuMyProduct", label: <Link to="/products/own">My Products</Link> },
                                 {key: "menuTransactions", label: <Link to="/transactions">My Transactions</Link>},
+                                {key: "menuMyOffers", label: <Link to="/offers">My Offers</Link> },
                                 {key: "menuCreditCards", label: <Link to="/creditcards">My Credit Cards</Link>},
                                 {key: "menuCreateProduct", label: <Link to="/products/create">Sell</Link> },
                                 {key: "menuDisconnect", label: <Link to="#" onClick={disconnect}>Disconnect</Link>},
@@ -176,6 +178,9 @@ let App = () => {
                         }></Route>
                         <Route path="/creditcards" element={
                             <CreditCardsComponent openNotification={openNotification}/>
+                        }></Route>
+                        <Route path="/offers" element={
+                            <ListMyOffers openNotification={openNotification}/>
                         }></Route>
                     </Routes>
                 </div>

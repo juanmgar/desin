@@ -2,6 +2,7 @@ import {useState, useEffect} from "react";
 import {useParams, useNavigate, Link} from 'react-router-dom';
 import {Typography, Card, Descriptions, Image, Button} from 'antd';
 import {ShoppingOutlined} from '@ant-design/icons';
+import CreateOfferComponent from "../Offers/CreateOfferComponent";
 
 let DetailsProductComponent = (props) => {
     let {openNotification} = props
@@ -9,9 +10,14 @@ let DetailsProductComponent = (props) => {
     const {id} = useParams();
 
     let [product, setProduct] = useState({})
+    let [userId, setUserId] = useState(null);
 
     useEffect(() => {
         getProduct(id);
+        const storedUserId = localStorage.getItem("userId");
+        if (storedUserId) {
+            setUserId(parseInt(storedUserId));
+        }
     }, [])
 
     let buyProduct = async () => {
@@ -91,6 +97,11 @@ let DetailsProductComponent = (props) => {
                 <Descriptions.Item>
                     <Text strong underline style={{fontSize: 20}}>{product.price}</Text>
                     {labelProductPrice}
+                </Descriptions.Item>
+                <Descriptions.Item>
+                    {product?.sellerId && userId && userId !== product.sellerId && (
+                        <CreateOfferComponent productId={product.id} />
+                    )}
                 </Descriptions.Item>
                 <Descriptions.Item>
                     <Button type="primary" onClick={buyProduct}

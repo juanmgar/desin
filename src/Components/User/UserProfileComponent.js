@@ -48,13 +48,11 @@ const UserProfileComponent = () => {
         { title: "Product", dataIndex: "title", key: "title" },
         { title: "Price", dataIndex: "price", key: "price" },
         { title: "Date", dataIndex: "date", key: "date", render: (text) => new Date(text).toLocaleDateString() },
-        { title: "Seller", dataIndex: "sellerId", key: "sellerId", render: (id) => <Link to={`/profile/${id}`}>Show profile</Link> },
     ];
 
     const productColumns = [
         { title: "Product", dataIndex: "title", key: "title" },
         { title: "Price", dataIndex: "price", key: "price" },
-        { title: "Seller", dataIndex: "sellerId", key: "sellerId", render: (id) => <Link to={`/profile/${id}`}>Show profile</Link> },
     ];
 
     return (
