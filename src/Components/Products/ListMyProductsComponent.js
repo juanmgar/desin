@@ -12,7 +12,7 @@ let ListMyProductsComponent = () => {
 
     let deleteProduct = async (id) => {
         let response = await fetch(
-            process.env.REACT_APP_BACKEND_BASE_URL+"/products/"+id,
+            "http://51.178.26.204:5050/products/"+id,
             {
                 method: "DELETE",
                 headers: {
@@ -37,7 +37,7 @@ let ListMyProductsComponent = () => {
 
     let getMyProducts = async () => {
         let response = await fetch(
-            process.env.REACT_APP_BACKEND_BASE_URL+"/products/own/",
+            "http://51.178.26.204:5050/products/own/",
             {
                 method: "GET",
                 headers: {

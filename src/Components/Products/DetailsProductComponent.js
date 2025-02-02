@@ -23,7 +23,7 @@ let DetailsProductComponent = (props) => {
 
     let buyProduct = async () => {
         let response = await fetch(
-            process.env.REACT_APP_BACKEND_BASE_URL + "/transactions/",
+            "http://51.178.26.204:5050/transactions/",
             {
                 method: "POST",
                 headers: {
@@ -45,7 +45,7 @@ let DetailsProductComponent = (props) => {
 
     let getProduct = async (id) => {
         let response = await fetch(
-            process.env.REACT_APP_BACKEND_BASE_URL + "/products/" + id,
+            "http://51.178.26.204:5050/products/" + id,
             {
                 method: "GET",
                 headers: {
@@ -56,7 +56,7 @@ let DetailsProductComponent = (props) => {
         if (response.ok) {
             let jsonData = await response.json();
 
-            let urlImage = process.env.REACT_APP_BACKEND_BASE_URL + "/images/" + jsonData.id + ".png";
+            let urlImage = "http://51.178.26.204:5050/images/" + jsonData.id + ".png";
 
             let existsImage = await checkURL(urlImage);
             setImageSrc(existsImage ? urlImage : "/imageMockup.png");
@@ -101,11 +101,18 @@ let DetailsProductComponent = (props) => {
                     {product?.sellerId && userId && userId !== product.sellerId && (
                         <CreateOfferComponent productId={product.id} />
                     )}
+                    {product?.sellerId && userId && userId == product.sellerId && (
+                        <span style={{ color: "red", fontWeight: "bold" }}>
+                            This product is yours. You cannot buy it.
+                        </span>
+                    )}
                 </Descriptions.Item>
                 <Descriptions.Item>
+                    {product?.sellerId && userId && userId !== product.sellerId && (
                     <Button type="primary" onClick={buyProduct} icon={<ShoppingOutlined/>} size="large">
                         Buy
                     </Button>
+                    )}
                 </Descriptions.Item>
             </Descriptions>
         </Card>

@@ -26,7 +26,7 @@ const CreateUserComponent = ({ openNotification }) => {
         };
 
         setLoading(true);
-        let response = await fetch(process.env.REACT_APP_BACKEND_BASE_URL + "/users", {
+        let response = await fetch("http://51.178.26.204:5050/users", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(formattedData),
@@ -69,7 +69,12 @@ const CreateUserComponent = ({ openNotification }) => {
                     <Input placeholder="Document Number" onChange={(e) => handleInputChange("documentNumber", e.target.value)} />
                 </Form.Item>
                 <Form.Item label="Country" name="country" rules={[{ required: true, message: "Country is required" }]}>
-                    <Input placeholder="Country" onChange={(e) => handleInputChange("country", e.target.value)} />
+                    <Select placeholder="Select Country" onChange={(value) => handleInputChange("country", value)}>
+                        <Option value="Spain">Spain</Option>
+                        <Option value="France">France</Option>
+                        <Option value="Germany">Germany</Option>
+                        <Option value="USA">USA</Option>
+                    </Select>
                 </Form.Item>
                 <Form.Item label="Address" name="address" rules={[{ required: true, message: "Address is required" }]}>
                     <Input placeholder="Address" onChange={(e) => handleInputChange("address", e.target.value)} />

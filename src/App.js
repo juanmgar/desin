@@ -15,6 +15,32 @@ import {FireOutlined, LoginOutlined} from '@ant-design/icons';
 import {useEffect, useState} from "react";
 import ListMyOffers from "./Components/Offers/ListMyOffers";
 
+
+const getTitleByPath = (path) => {
+    switch (path) {
+        case "/":
+            return "Home - Wallapep";
+        case "/login":
+            return "Login - Wallapep";
+        case "/register":
+            return "Register - Wallapep";
+        case "/products":
+            return "Products - Wallapep";
+        case "/products/own":
+            return "My Products - Wallapep";
+        case "/transactions":
+            return "My Transactions - Wallapep";
+        case "/creditcards":
+            return "My Credit Cards - Wallapep";
+        case "/offers":
+            return "My Offers - Wallapep";
+        case "/products/create":
+            return "New Product - Wallapep";
+        default:
+            return "Wallapep";
+    }
+};
+
 let App = () => {
     const [api, contextHolder] = notification.useNotification();
 
@@ -25,8 +51,9 @@ let App = () => {
     let {Header, Content, Footer} = Layout;
 
     useEffect(() => {
+        document.title = getTitleByPath(location.pathname);
         checkAll()
-    }, [])
+    }, [location.pathname])
 
     let checkAll = async () => {
         let isActive = await checkLoginIsActive()
@@ -48,7 +75,7 @@ let App = () => {
         }
 
         let response = await fetch(
-            process.env.REACT_APP_BACKEND_BASE_URL + "/users/isActiveApiKey",
+            "http://51.178.26.204:5050/users/isActiveApiKey",
             {
                 method: "GET",
                 headers: {
@@ -80,7 +107,7 @@ let App = () => {
 
     let disconnect = async () => {
         let response = await fetch(
-            process.env.REACT_APP_BACKEND_BASE_URL + "/users/disconnect",
+            "http://51.178.26.204:5050/users/disconnect",
             {
                 method: "GET",
                 headers: {
@@ -122,7 +149,7 @@ let App = () => {
                                 {key: "menuTransactions", label: <Link to="/transactions">My Transactions</Link>},
                                 {key: "menuMyOffers", label: <Link to="/offers">My Offers</Link> },
                                 {key: "menuCreditCards", label: <Link to="/creditcards">My Credit Cards</Link>},
-                                {key: "menuCreateProduct", label: <Link to="/products/create">Sell</Link> },
+                                {key: "menuCreateProduct", label: <Link to="/products/create">Sell New Product</Link> },
                                 {key: "menuDisconnect", label: <Link to="#" onClick={disconnect}>Disconnect</Link>},
                             ]}>
                             </Menu>

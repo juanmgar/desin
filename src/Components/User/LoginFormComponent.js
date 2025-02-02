@@ -22,7 +22,7 @@ let LoginFormComponent = (props) => {
 
     let clickLogin = async () => {
         let response = await fetch(
-            process.env.REACT_APP_BACKEND_BASE_URL + "/users/login", {
+            "http://51.178.26.204:5050/users/login", {
                 method: "POST",
                 headers: {"Content-Type": "application/json "},
                 body: JSON.stringify(formData)

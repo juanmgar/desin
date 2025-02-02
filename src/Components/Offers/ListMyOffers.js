@@ -6,7 +6,7 @@ const ListMyOffers = (props) => {
     const [offers, setOffers] = useState([]);
 
     useEffect(() => {
-        fetch(process.env.REACT_APP_BACKEND_BASE_URL + "/offers/received", {
+        fetch("http://51.178.26.204:5050/offers/received", {
             headers: { "apikey": localStorage.getItem("apiKey") }
         })
             .then(res => res.json())
@@ -14,7 +14,7 @@ const ListMyOffers = (props) => {
     }, []);
 
     const acceptOffer = async (id) => {
-        await fetch(process.env.REACT_APP_BACKEND_BASE_URL + `/offers/${id}/accept`, {
+        await fetch(`http://51.178.26.204:5050/offers/${id}/accept`, {
             method: "POST",
             headers: { "apikey": localStorage.getItem("apiKey") }
         });
@@ -23,7 +23,7 @@ const ListMyOffers = (props) => {
     };
 
     const rejectOffer = async (id) => {
-        await fetch(process.env.REACT_APP_BACKEND_BASE_URL + `/offers/${id}`, {
+        await fetch(`http://51.178.26.204:5050/offers/${id}`, {
             method: "DELETE",
             headers: { "apikey": localStorage.getItem("apiKey") }
         });

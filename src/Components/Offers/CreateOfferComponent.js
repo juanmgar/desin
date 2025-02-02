@@ -5,7 +5,7 @@ const CreateOfferComponent = ({ productId }) => {
     const [price, setPrice] = useState("");
 
     const sendOffer = async () => {
-        let response = await fetch(process.env.REACT_APP_BACKEND_BASE_URL + "/offers", {
+        let response = await fetch("http://51.178.26.204:5050/offers", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

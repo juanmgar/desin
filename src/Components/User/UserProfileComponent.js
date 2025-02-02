@@ -15,7 +15,7 @@ const UserProfileComponent = () => {
     }, [id]);
 
     const fetchUserData = async () => {
-        let response = await fetch(`${process.env.REACT_APP_BACKEND_BASE_URL}/users/${id}`, {
+        let response = await fetch(`http://51.178.26.204:5050/users/${id}`, {
             method: "GET",
             headers: { "apikey": localStorage.getItem("apiKey") },
         });
@@ -25,7 +25,7 @@ const UserProfileComponent = () => {
     };
 
     const fetchUserTransactions = async () => {
-        let response = await fetch(`${process.env.REACT_APP_BACKEND_BASE_URL}/transactions/public?sellerId=${id}`, {
+        let response = await fetch(`http://51.178.26.204:5050/transactions/public?sellerId=${id}`, {
             method: "GET",
             headers: { "apikey": localStorage.getItem("apiKey") },
         });
@@ -35,7 +35,7 @@ const UserProfileComponent = () => {
     };
 
     const fetchUserProducts = async () => {
-        let response = await fetch(`${process.env.REACT_APP_BACKEND_BASE_URL}/products?sellerId=${id}`, {
+        let response = await fetch(`http://51.178.26.204:5050/products?sellerId=${id}`, {
             method: "GET",
             headers: { "apikey": localStorage.getItem("apiKey") },
         });

@@ -12,7 +12,7 @@ let TransactionsComponent = () => {
     }, []);
 
     let getTransactions = async () => {
-        let response = await fetch(process.env.REACT_APP_BACKEND_BASE_URL + "/transactions/own", {
+        let response = await fetch("http://51.178.26.204:5050/transactions/own", {
             method: "GET",
             headers: {
                 "apikey": localStorage.getItem("apiKey")
@@ -39,6 +39,8 @@ let TransactionsComponent = () => {
         setSelectedTransaction(null);
     };
 
+    const userId = localStorage.getItem("userId");
+
     const columns = [
         {
             title: "Product",
@@ -60,13 +62,21 @@ let TransactionsComponent = () => {
             title: "Seller",
             dataIndex: [],
             render: (product) =>
-                product.sellerId ? <Link to={"/profile/"+product.sellerId}>I am the seller</Link> : "N/A"
+                product.sellerId
+                    ? product.sellerId == userId
+                        ? <span style={{ color: "blue", fontWeight: "bold" }}>You are the seller</span>
+                        : <Link to={"/profile/" + product.sellerId}>View seller profile</Link>
+                    : "N/A"
         },
         {
             title: "Buyer",
             dataIndex: [],
             render: (product) =>
-                product.buyerId ? <Link to={"/profile/"+product.buyerId}>I am the buyer</Link> : "N/A"
+                product.buyerId
+                    ? product.buyerId == userId
+                        ? <span style={{ color: "green", fontWeight: "bold" }}>You are the buyer</span>
+                        : <Link to={"/profile/" + product.buyerId}>View buyer profile</Link>
+                    : "N/A"
         },
         {
             title: "Actions",

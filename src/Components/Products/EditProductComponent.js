@@ -16,7 +16,7 @@ let EditProductComponent = () => {
 
     let getProduct = async (id) => {
         let response = await fetch(
-            process.env.REACT_APP_BACKEND_BASE_URL+"/products/"+id,
+            "http://51.178.26.204:5050/products/"+id,
             {
                 method: "GET",
                 headers: {
@@ -38,7 +38,7 @@ let EditProductComponent = () => {
 
     let clickEditProduct = async () => {
         let response = await fetch(
-            process.env.REACT_APP_BACKEND_BASE_URL+"/products/"+id,
+            "http://51.178.26.204:5050/products/"+id,
             {
                 method: "PUT",
                 headers: {

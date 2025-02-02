@@ -15,7 +15,7 @@ const HomePage = () => {
     const [productCounts, setProductCounts] = useState({});
 
     useEffect(() => {
-        fetch(process.env.REACT_APP_BACKEND_BASE_URL + "/products/categories/count")
+        fetch("http://51.178.26.204:5050/products/categories/count")
             .then(response => response.json())
             .then(data => {
                 const transformedData = {};
